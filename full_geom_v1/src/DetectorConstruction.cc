@@ -80,7 +80,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 			  posRock,       //at (0,0,0)
 			  logicRock,            //its logical volume
 			  "Rock",               //its name
-			  logicWorld,                     //its mother  volume
+			  logicWorld,             //its mother  volume
 			  false,                 //no boolean operation
 			  0,                     //copy number
 			  checkOverlaps);        //overlaps checking
@@ -96,6 +96,40 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	     <<", Rock Bottom : "<<ROCK_SPACE_BOTTOM
 	     <<", Rock Side : "<<ROCK_SPACE_SIDE
 	     <<std::endl;
+
+	//
+	// Rock Daughter
+	//
+	G4Material* rock_daughter_mat = nist->FindOrBuildMaterial(material_map.at(ROCK_MATERIAL));
+	G4Box* solidRockDaughter =
+		new G4Box("Rock_Daughter",
+			0.5 * ROCK_DAUGHTER_W, 0.5 * ROCK_DAUGHTER_W, 0.5 * ROCK_DAUGHTER_H);
+	G4LogicalVolume* logicRockDaughter=
+		new G4LogicalVolume(solidRockDaughter,          //its solid
+			rock_daughter_mat,           //its material
+			"Rock_Daughter");            //its name
+	G4ThreeVector posRockDaughter(ROCK_DAUGHTER_X, ROCK_DAUGHTER_Y, ROCK_DAUGHTER_Z);
+	G4VPhysicalVolume* physRockDaughter =
+		new G4PVPlacement(0,                     //no rotation
+			posRockDaughter,       //at (0,0,0)
+			logicRockDaughter,            //its logical volume
+			"Rock_Daughter",               //its name
+			logicRock,                     //its mother  volume
+			false,                 //no boolean operation
+			0,                     //copy number
+			checkOverlaps);        //overlaps checking
+	std::cout << "ROCK_DAUGHTER_X : " << ROCK_DAUGHTER_X
+		<< ", ROCK_DAUGHTER_Y : " << ROCK_DAUGHTER_Y
+		<< ", ROCK_DAUGHTER_Z : " << ROCK_DAUGHTER_Z
+		<< std::endl;
+
+	std::cout << "ROCK_DAUGHTER_W : " << ROCK_DAUGHTER_W << ", ROCK_DAUGHTER_H : " << ROCK_DAUGHTER_H << std::endl;
+
+	// print rock daughter thickness on all sides
+	std::cout << "Rock Daughter Top : " << ROCK_DAUGHTER_TOP
+		<< ", Rock Daughter Bottom : " << ROCK_DAUGHTER_BOTTOM
+		<< ", Rock Daughter Side : " << ROCK_DAUGHTER_SIDE
+		<< std::endl;
 
     //
     // Hall
